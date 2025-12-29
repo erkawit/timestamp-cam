@@ -1,0 +1,77 @@
+/* Google Font */
+.font-prompt {
+    font-family: 'Prompt', sans-serif;
+}
+
+body {
+    background-color: #111827; /* gray-900 */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1f2937; 
+}
+::-webkit-scrollbar-thumb {
+    background: #10b981; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #059669; 
+}
+
+/* Video Container */
+#video {
+    transform: scaleX(-1); /* Mirror effect for selfie camera, optional */
+}
+
+/* DataTables Dark Mode Overrides */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: #e5e7eb !important; /* gray-200 */
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+table.dataTable tbody tr {
+    background-color: transparent !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    color: #000;
+}
+
+/* SweetAlert Customization */
+div:where(.swal2-container) div:where(.swal2-popup) {
+    background: #1f2937 !important;
+    color: #fff !important;
+    border: 1px solid #374151;
+}
+div:where(.swal2-container) input:where(.swal2-input), 
+div:where(.swal2-container) textarea:where(.swal2-textarea) {
+    background: #374151 !important;
+    color: #fff !important;
+    border-color: #4b5563 !important;
+}
+
+/* Report Modal Styles */
+.report-option {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.report-option:hover {
+    background-color: #374151;
+}
+
+/* Canvas Overlay Helper Class (not used directly in DOM but for ref) */
+.overlay-text {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    font-size: 14px;
+}
