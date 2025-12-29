@@ -15,21 +15,12 @@ const GOOGLE_DRIVE_FOLDER_ID = '13nFcWju11fVcAj_mN0iZk3M9kH42Ro5I';
 // REPLACE WITH YOUR FIREBASE CONFIG
 const firebaseConfig = {
     apiKey: "AIzaSyC_5rusojywidndpkjrY5awbe_nB-tQQSc",
-    authDomain: "unjaischool-b00ea.firebaseapp.com",
+    authDomain: "unjaischool-b00ea.firebaseapp.com.firebaseapp.com",
     projectId: "unjaischool-b00ea",
     storageBucket: "unjaischool-b00ea.firebasestorage.app",
     messagingSenderId: "719690920018",
-    appId: "1:719690920018:web:9c33d9a878147986432f8b",
-    measurementId: "G-7MWXL7Z6CJ"
+    appId: "1:719690920018:web:9c33d9a878147986432f8b"
 };
-// const firebaseConfig = {
-//     apiKey: "AIzaSyC_5rusojywidndpkjrY5awbe_nB-tQQSc",
-//     authDomain: "unjaischool-b00ea.firebaseapp.com.firebaseapp.com",
-//     projectId: "unjaischool-b00ea",
-//     storageBucket: "unjaischool-b00ea.firebasestorage.app",
-//     messagingSenderId: "719690920018",
-//     appId: "1:719690920018:web:9c33d9a878147986432f8b"
-// };
 
 // Initialize Firebase
 // Note: We wrap in try-catch to prevent app crash if config is missing
