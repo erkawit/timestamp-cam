@@ -4,119 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timestamp Camera Pro</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS (for base styling, custom CSS will override) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-
+    <title>Photo Geo-Location App</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-gray-900 text-white font-prompt">
+<body>
+    <div class="container">
+        <h1>📸 Photo Geo-Track Pro</h1>
+        <!-- Camera Section -->
+        <div class="card camera-container">
+            <video id="camera-view" autoplay playsinline></video>
+            <canvas id="output-canvas" class="hidden"></canvas>
 
-    <!-- Navigation -->
-    <nav class="bg-gray-800 p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-emerald-400"><i class="fas fa-camera-retro mr-2"></i> Timestamp Cam</h1>
-            <div>
-                <button id="cameraTabBtn"
-                    class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition active-tab">ถ่ายภาพ</button>
-                <button id="galleryTabBtn"
-                    class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition">แกลเลอรี่ & รายงาน</button>
+            <div class="controls">
+                <button id="btn-toggle-camera" class="btn btn-secondary">
+                    <span class="material-icons-round">cameraswitch</span> Switch Camera
+                </button>
+                <button id="btn-capture" class="btn btn-primary">
+                    <span class="material-icons-round">camera_alt</span> Capture Photo
+                </button>
+                <button id="btn-retake" class="btn btn-secondary hidden">
+                    <span class="material-icons-round">refresh</span> Retake
+                </button>
+                <button id="btn-save-manual" class="btn btn-success hidden">
+                    <span class="material-icons-round">save</span> Save
+                </button>
             </div>
+
+            <p id="geo-status" style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">
+                <span class="material-icons-round" style="vertical-align: middle; font-size: 1rem;">location_on</span>
+                <span id="location-text">Waiting for location...</span>
+            </p>
         </div>
-    </nav>
-
-    เ
-    <!-- Camera Section -->
-    <section id="cameraSection" class="container mx-auto p-4 flex flex-col items-center">
-        <div class="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-700 bg-black">
-            <!-- Video Feed -->
-            <video id="video" class="w-full h-auto object-cover" autoplay playsinline></video>
-
-            <!-- Hidden Canvas for Processing -->
-            <canvas id="canvas" class="hidden"></canvas>
-
-            <!-- Loading Overlay -->
-            <div id="loading" class="absolute inset-0 bg-black/80 flex items-center justify-center z-10 hidden">
-                <div class="text-center">
-                    <i class="fas fa-spinner fa-spin text-4xl text-emerald-500 mb-2"></i>
-                    <p>กำลังประมวลผล...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="mt-6 flex gap-4">
-            <button id="captureBtn"
-                class="w-16 h-16 rounded-full bg-white border-4 border-emerald-500 flex items-center justify-center shadow-lg hover:scale-110 transition">
-                <div class="w-12 h-12 rounded-full bg-emerald-500"></div>
-            </button>
-        </div>
-
-        <p class="mt-4 text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-1"></i> <span
-                id="locationStatus">กำลังค้นหาพิกัด...</span></p>
-    </section>
-
-    <!-- Gallery / Dashboard Section -->
-    <section id="gallerySection" class="container mx-auto p-4 hidden">
-        <div class="bg-gray-800 rounded-xl p-6 shadow-xl">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                <h2 class="text-2xl font-bold">บันทึกข้อมูล</h2>
-                <div class="flex gap-2">
-                    <button id="printReportBtn"
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition">
-                        <i class="fas fa-file-pdf mr-2"></i> พิมพ์รายงาน
+        <!-- Dashboard Section -->
+        <div class="card">
+            <div class="data-controls">
+                <h2>📋 Data Records</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="exportPDF('all')">
+                        <span class="material-icons-round">picture_as_pdf</span> All Report
+                    </button>
+                    <button class="btn btn-secondary" onclick="openManualAddModal()">
+                        <span class="material-icons-round">add_circle</span> Add Manual
                     </button>
                 </div>
             </div>
-
-            <!-- Report Filter Modal (using generic hidden div, will use SweetAlert or custom modal) -->
-
-            <div class="overflow-x-auto bg-white rounded-lg text-gray-900 p-4">
-                <table id="dataTable" class="table table-striped w-full" style="width:100%">
+            <div class="data-controls">
+                <input type="text" id="search-box" class="search-input" placeholder="🔍 Search records...">
+                <div style="display: flex; gap: 5px;">
+                    <select id="report-type" class="search-input" style="width: auto;">
+                        <option value="all">Report: All</option>
+                        <option value="day">Report: Today</option>
+                        <option value="month">Report: This Month</option>
+                        <option value="year">Report: This Year</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="generateReport()">Print Report</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="data-table">
                     <thead>
                         <tr>
-                            <th>วัน/เวลา</th>
-                            <th>พิกัด</th>
-                            <th>หมายเหตุ</th>
-                            <th>รูปภาพ</th>
-                            <th>จัดการ</th>
+                            <th>Image</th>
+                            <th>Date / Time</th>
+                            <th>Location (Lat, Long)</th>
+                            <th>Note</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Data will be populated here -->
+                    <tbody id="table-body">
+                        <!-- Data rows will be injected here -->
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading data...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-    </section>
-
-    <!-- Scripts -->
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <!-- SweetAlert2 -->
+    </div>
+    <!-- Hidden Manual Add Modal (Simulated with SweetAlert, but structure kept here if needed for complexity) -->
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <!-- Google API -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <!-- DataTables -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-    <!-- Custom JS -->
+    <!-- App Logic -->
     <script src="app.js"></script>
 </body>
 
